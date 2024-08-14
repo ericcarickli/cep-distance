@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+// use Illuminate\Database\Eloquent\Model;
+use MongoDB\Laravel\Eloquent\Model as Eloquent;
 
-class CEPDistance extends Model
+class CEPDistance extends Eloquent
 {
     protected $collection = 'cep_distances';
 

@@ -1,0 +1,28 @@
+.container {
+    gap: 60px;
+    display: flex;
+    flex-direction: column;
+
+    .calculate-distance-container {
+        gap: 20px;   
+        display: flex;
+        align-items: end;
+        flex-direction: row;
+    }
+
+    .result-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .result {
+            font-size: 24px;
+            font-weight: bold;
+            color: #000;
+
+            .result-value {
+                color: #F5A017;
+            }
+        }
+    }
+}

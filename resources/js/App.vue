@@ -1,14 +1,8 @@
-<!-- App.vue -->
 <template>
   <div>
-    <!-- <nav>
-      <router-link to="/">Home</router-link>
-      <router-link to="/calculate-distance">About</router-link>
-    </nav>
-    <router-view></router-view> Route components will be rendered here -->
-    <Layout>
-      <router-view></router-view> <!-- This is where the routed component will be displayed -->
-    </Layout>
+    <MainTemplate>
+      <router-view></router-view>
+    </MainTemplate>
   </div>
 </template>
 
@@ -22,12 +16,3 @@ export default {
   }
 };
 </script>
-
-<!-- <style>
-nav {
-  padding: 10px;
-}
-nav a {
-  margin: 0 10px;
-}
-</style> -->

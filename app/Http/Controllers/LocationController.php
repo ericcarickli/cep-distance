@@ -4,31 +4,37 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use App\Models\CEPDistance;
 
 class LocationController extends Controller
 {
-    public function validateCep(Request $request)
+    public function listDistances()
     {
-        $cep = $request->input('cep');
-        $response = Http::get("https://brasilapi.com.br/api/cep/v1/{$cep}");
+        $distances = CEPDistance::all();
 
-        if ($response->successful()) {
-            $data = $response->json();
-            // Return the data or perform further processing
-            return response()->json($data);
-        } else {
-            return response()->json(['error' => 'Invalid CEP'], 400);
-        }
+        return response()->json($distances);
     }
 
-    public function calculateDistance(Request $request)
+    public function calculate(Request $request)
     {
-        $lat1 = $request->input('lat1');
-        $lon1 = $request->input('lon1');
-        $lat2 = $request->input('lat2');
-        $lon2 = $request->input('lon2');
+        $cepFromValidated = $this->validateCep($request->input('cep_from'));
+        $cepToValidated = $this->validateCep($request->input('cep_to'));
 
-        $distance = $this->haversineGreatCircleDistance($lat1, $lon1, $lat2, $lon2);
+        if (isset($cepFromValidated['error'])) {
+            return response()->json(['error' => 'Invalid CEP from'], 400);
+        }
+
+        if (isset($cepToValidated['error'])) {
+            return response()->json(['error' => 'Invalid CEP to'], 400);
+        }
+
+        $latFrom = $cepFromValidated['location']['coordinates']['latitude'];
+        $lonFrom = $cepFromValidated['location']['coordinates']['longitude'];
+        $latTo = $cepToValidated['location']['coordinates']['latitude'];
+        $lonTo = $cepToValidated['location']['coordinates']['longitude'];
+
+        // Haversine formula
+        $distance = $this->haversineGreatCircleDistance($latFrom, $lonFrom, $latTo, $lonTo);
 
         CEPDistance::create([
             'cep_from' => $request->input('cep_from'),
@@ -41,7 +47,18 @@ class LocationController extends Controller
         return response()->json(['distance' => $distance]);
     }
 
-    private function haversineGreatCircleDistance($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371)
+    private function validateCep(String $cep)
+    {
+        $response = Http::get("https://brasilapi.com.br/api/cep/v2/{$cep}");
+
+        if ($response->successful()) {
+            return $response->json();
+        } else {
+            return ['error' => 'Invalid CEP'];
+        }
+    }
+
+    private function haversineGreatCircleDistance(String $latitudeFrom, String $longitudeFrom, String $latitudeTo, String $longitudeTo, Int $earthRadius = 6371)
     {
         // convert from degrees to radians
         $latFrom = deg2rad($latitudeFrom);
