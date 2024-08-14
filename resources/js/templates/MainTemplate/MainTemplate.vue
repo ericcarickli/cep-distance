@@ -1,7 +1,11 @@
 <template>
   <div>
-    <h1>About Page</h1>
-    <p>This is the about page.</p>
+    <header>
+      <h1>Cep Distance</h1>
+    </header>
+    <div>
+      <slot></slot>
+    </div>
   </div>
 </template>
 

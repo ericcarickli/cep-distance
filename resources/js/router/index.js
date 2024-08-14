@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeComponent from '../components/HomeComponent/HomeComponent.vue';
-import AboutComponent from '../components/AboutComponent/AboutComponent.vue';
+import CalculateDistance from '../components/CalculateDistanceComponent/CalculateDistanceComponent.vue'
 
 const routes = [
   {
@@ -9,9 +9,9 @@ const routes = [
     component: HomeComponent,
   },
   {
-    path: '/about',
-    name: 'About',
-    component: AboutComponent,
+    path: '/calculate-distance',
+    name: 'CalculateDistance',
+    component: CalculateDistance,
   },
 ];
 

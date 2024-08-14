@@ -1,8 +1,8 @@
-<!-- HomeComponent.vue -->
 <template>
   <div>
-    <h1>Home Page</h1>
-    <p>Welcome to the home page.</p>
+    <h2>Home Page</h2>
+    <p>Welcome to the home page!</p>
+    <router-link to="/calculate-distance">Go to Distance Page</router-link>
   </div>
 </template>
 
