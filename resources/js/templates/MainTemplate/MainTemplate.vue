@@ -5,9 +5,7 @@
       <Button @click="handleClick">Distâncias já calculadas</Button>
     </header>
     <div class="children-container">
-      <div class="children">
-        <slot></slot>
-      </div>
+      <slot></slot>
     </div>
   </div>
 </template>
@@ -30,7 +28,7 @@ export default {
   },
   methods: {
     handleClick() {
-      this.$router.push('/calculate-distance');
+      this.$router.push('/calculated-distances');
     },
     navigateHome() {
       this.$router.push('/');

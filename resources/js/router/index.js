@@ -1,17 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeComponent from '../components/HomeComponent/HomeComponent.vue';
-import CalculateDistance from '../components/CalculateDistanceComponent/CalculateDistanceComponent.vue'
+import CalculatedDistances from '../components/CalculatedDistancesComponent/CalculatedDistancesComponent.vue'
 
 const routes = [
   {
-    path: '/',
-    name: 'Home',
-    component: HomeComponent,
+    path: '/', component: HomeComponent,
   },
   {
-    path: '/calculate-distance',
-    name: 'CalculateDistance',
-    component: CalculateDistance,
+    path: '/calculated-distances', component: CalculatedDistances,
   },
 ];
 

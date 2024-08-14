@@ -1,12 +1,25 @@
 <template>
-    <button class="button-container" @click="$emit('click')">
-        <slot></slot> <!-- This allows for flexible button content -->
+    <button class="button-container" :disabled="disabled" @click="$emit('click')">
+        <slot></slot>
     </button>
 </template>
   
 <script>
     export default {
-        name: 'Button'
+        name: 'Button',
+        props: {
+            disabled: {
+                type: Boolean,
+                default: false
+            }
+        },
+        methods: {
+            handleClick(event) {
+                if (!this.disabled) {
+                    this.$emit('click', event);
+                }
+            }
+        }
     }
 </script>
   
