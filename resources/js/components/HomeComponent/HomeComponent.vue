@@ -69,6 +69,7 @@
 
           this.loading = false;
         } catch (err) {
+          this.loading = false;
           this.error = 'An error occurred: ' + (err.response?.data?.error || err.message);
         }
       },

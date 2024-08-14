@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LocationController;
+use App\Http\Controllers\DistanceController;
 
-Route::post('/calculate', [LocationController::class, 'calculate']);
-Route::get('/distances', [LocationController::class, 'listDistances']);
+Route::post('/calculate', [DistanceController::class, 'calculate']);
+Route::get('/distances', [DistanceController::class, 'listDistances']);
