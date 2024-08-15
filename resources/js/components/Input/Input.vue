@@ -1,15 +1,18 @@
 <template>
     <div class="main-container">
-      <label class="label" :for="id">{{ label }}</label>
-      <div class="input-container">
-        <input
-            :id="id"
-            :type="type"
-            :value="modelValue"
-            class="input"
-            @input="$emit('update:modelValue', $event.target.value)"
-        />
-      </div>
+        <label class="label" :for="id">
+            {{ label }}
+            <span v-if="required">*</span>
+        </label>
+        <div class="input-container">
+            <input
+                :id="id"
+                :type="type"
+                :value="modelValue"
+                class="input"
+                @input="$emit('update:modelValue', $event.target.value)"
+            />
+        </div>
     </div>
   </template>
   
@@ -23,7 +26,8 @@
                 type: String,
                 default: 'text'
             },
-            modelValue: String
+            modelValue: String,
+            required: Boolean
         }
     }
 </script>

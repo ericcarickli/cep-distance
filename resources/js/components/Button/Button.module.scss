@@ -18,11 +18,16 @@
     color: #FFFFFF;
     font-weight: 500;
 
-    &:hover {
+    &:hover:not(.disabled) {
         background: #FBBC34;
     }
 
-    &:active {
+    &:active:not(.disabled) {
         color: #000;
+    }
+
+    &.disabled {
+        background: #f9cc6b;
+        cursor: not-allowed;
     }
 }

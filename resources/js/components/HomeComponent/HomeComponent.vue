@@ -4,23 +4,26 @@
       <div class="calculate-distance-container">
         <Input 
           id="from" 
-          label="CEP de origem"
+          :required="true"
           v-model="cepFrom"
+          label="CEP de origem"
         />
         <Input 
           id="to" 
-          label="CEP de destino"
           v-model="cepTo"
+          :required="true"
+          label="CEP de destino"
         />
-        <Button @click="calculateDistance" :disabled="loading">
+        <Button @click="calculateDistance" :disabled="!isCepValid || loading">
           {{ loading ?  'Calculando...' : 'Calcular Distância' }}
         </Button>
       </div>
       <div class="result-container">
-        <span v-if="distance" class="result">A distância é de: 
+        <span v-if="distance !== null" class="result">
+          A distância é de: 
           <span class="result-value">{{ formatDistance(distance) }} km </span>
         </span>
-        <span v-if="error" class="error">Erro: {{ error }}</span>
+        <span v-if="error" class="error">{{ error }}</span>
       </div>
     </div>
   </div>
@@ -46,6 +49,12 @@
         loading: false
       };
     },
+    computed: {
+      isCepValid() {
+        const cepPattern = /^\d{8}$/;
+        return cepPattern.test(this.cepFrom) && cepPattern.test(this.cepTo);
+      }
+    },
     methods: {
       async calculateDistance() {
         if (this.loading) return;
@@ -61,17 +70,28 @@
             cep_to: this.cepTo
           });
 
-          if (response.data.distance) {
+          console.log(response);
+
+          if (response.data.distance !== undefined) {
             this.distance = response.data.distance;
           } else {
             this.error = 'Invalid response from server.';
           }
-
-          this.loading = false;
         } catch (err) {
+          this.handleError(err.response?.data?.error || err.message);
+        } finally {
           this.loading = false;
-          this.error = 'An error occurred: ' + (err.response?.data?.error || err.message);
         }
+      },
+      handleError(errorCode) {
+        const errorMessages = {
+          from_cep_invalid: 'CEP de origem inválido.',
+          to_cep_invalid: 'CEP de destino inválido.',
+          from_cep_coordinates_not_available: 'Coordenadas do CEP de origem não estão disponíveis na Brasil API.',
+          to_cep_coordinates_not_available: 'Coordenadas do CEP de destino não estão disponíveis na Brasil API.'
+        };
+
+        this.error = errorMessages[errorCode] || 'Ocorreu um erro inesperado. Tente novamente mais tarde.';
       },
       formatDistance(distance) {
         return distance.toFixed(2);

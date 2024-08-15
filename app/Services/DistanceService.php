@@ -24,18 +24,26 @@ class DistanceService
         $cepToValidated = $this->validateCep($cepTo);
 
         if (isset($cepFromValidated['error'])) {
-            throw new \Exception('CEP de origem inválido', 400);
+            throw new \Exception('from_cep_invalid', 400);
         }
 
+        //CEP de origem inválido  => from_cep_invalid
+        // CEP de destino inválido  => to_cep_invalid
+        // Coordenadas do CEP de origem não estão disponíveis na Brasil API => from_cep_coordinates_not_available
+        // Coordenadas do CEP de destino não estão disponíveis na Brasil API => to_cep_coordinates_not_available
+
         if (isset($cepToValidated['error'])) {
-            throw new \Exception('CEP de destino inválido', 400);
+            throw new \Exception('to_cep_invalid', 400);
         }
 
         if (!isset($cepFromValidated['location']['coordinates']['latitude']) ||
-            !isset($cepFromValidated['location']['coordinates']['longitude']) ||
-            !isset($cepToValidated['location']['coordinates']['latitude']) ||
+            !isset($cepFromValidated['location']['coordinates']['longitude'])) {
+            throw new \Exception('from_cep_coordinates_not_available', 400);
+        }
+
+        if (!isset($cepToValidated['location']['coordinates']['latitude']) ||
             !isset($cepToValidated['location']['coordinates']['longitude'])) {
-            throw new \Exception('Coordenadas do CEP não estão disponíveis', 400);
+            throw new \Exception('to_cep_coordinates_not_available', 400);
         }
 
         $latFrom = $cepFromValidated['location']['coordinates']['latitude'];

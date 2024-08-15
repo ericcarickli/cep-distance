@@ -6,6 +6,13 @@ php artisan make:controller LocationController
 php artisan make:model CEPDistance -m
 
 
+// TODO
+1- handle error message to show correctly
+2- calculate and save elements from .csv
+3- configure docker
+4- check the code if it's all good
+
+
 
 pecl install mongodb
 
