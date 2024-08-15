@@ -26,9 +26,39 @@ class DistanceController extends Controller
 
         try {
             $distance = $this->distanceService->calculateDistance($cepFrom, $cepTo);
+            $this->distanceService->saveDistance($cepFrom, $cepTo, $distance);
+
             return response()->json(['distance' => $distance]);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], $e->getCode());
         }
+    }
+
+    public function calculateMass(Request $request) {
+        $request->validate([
+            'file' => 'required|mimes:csv,txt'
+        ]);
+
+        $file = $request->file('file');
+        $path = $file->getRealPath();
+        
+        $data = array_map('str_getcsv', file($path));
+        array_shift($data);
+
+        $savedDistances = [];
+
+        foreach ($data as $row) {
+            list($cepFrom, $cepTo) = $row;
+
+            try {
+                $distance = $this->distanceService->calculateDistance($cepFrom, $cepTo);
+                $savedDistance = $this->distanceService->saveDistance($cepFrom, $cepTo, $distance);
+                $savedDistances[] = $savedDistance;
+            } catch (\Exception $e) {
+                return response()->json(['error' => $e->getMessage()], 400);
+            }
+        }
+
+        return response()->json($savedDistances);
     }
 }

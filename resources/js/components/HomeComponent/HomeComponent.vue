@@ -1,22 +1,27 @@
 <template>
   <div class="home">
     <div class="container">
-      <div class="calculate-distance-container">
-        <Input 
-          id="from" 
-          :required="true"
-          v-model="cepFrom"
-          label="CEP de origem"
-        />
-        <Input 
-          id="to" 
-          v-model="cepTo"
-          :required="true"
-          label="CEP de destino"
-        />
-        <Button @click="calculateDistance" :disabled="!isCepValid || loading">
-          {{ loading ?  'Calculando...' : 'Calcular Distância' }}
-        </Button>
+      <div class="calculate-container">
+        <div class="router-link-container">
+          <router-link class="link" to="/calculate-mass">Calcular distâncias em massa</router-link>
+        </div>
+        <div class="calculate-distance-container">
+          <Input 
+            id="from" 
+            :required="true"
+            v-model="cepFrom"
+            label="CEP de origem"
+          />
+          <Input 
+            id="to" 
+            v-model="cepTo"
+            :required="true"
+            label="CEP de destino"
+          />
+          <Button @click="calculateDistance" :disabled="!isCepValid || loading">
+            {{ loading ?  'Calculando...' : 'Calcular Distância' }}
+          </Button>
+        </div>
       </div>
       <div class="result-container">
         <span v-if="distance !== null" class="result">

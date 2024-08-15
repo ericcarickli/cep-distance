@@ -7,8 +7,8 @@ php artisan make:model CEPDistance -m
 
 
 // TODO
-1- handle error message to show correctly
-2- calculate and save elements from .csv
+1- handle error message to show correctly -- done
+2- calculate and save elements from .csv  -> handle when cep is invalid for mass  importation
 3- configure docker
 4- check the code if it's all good
 
