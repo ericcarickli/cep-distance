@@ -6,6 +6,7 @@
     flex-direction: column;
 
     .header-container {
+        z-index: 4;
         display: flex;
         background: #fff;
         padding: 10px 26px;
@@ -26,6 +27,7 @@
         height: 100%;
         padding: 40px;
         display: flex;
-        overflow-y: auto;
+        overflow: hidden;
+        // overflow-y: auto;
     }
 }

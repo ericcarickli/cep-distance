@@ -47,18 +47,31 @@ class DistanceController extends Controller
 
         $savedDistances = [];
 
-        foreach ($data as $row) {
+        foreach ($data as $index => $row) {
             list($cepFrom, $cepTo) = $row;
 
             try {
                 $distance = $this->distanceService->calculateDistance($cepFrom, $cepTo);
-                $savedDistance = $this->distanceService->saveDistance($cepFrom, $cepTo, $distance);
-                $savedDistances[] = $savedDistance;
+                // $savedDistance = $this->distanceService->saveDistance($cepFrom, $cepTo, $distance);
+                
+                $distanceData = [
+                    'cep_from' => $cepFrom,
+                    'cep_to' => $cepTo,
+                    'calculated_distance' => $distance,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+
+                $savedDistances[] = $distanceData;
             } catch (\Exception $e) {
-                return response()->json(['error' => $e->getMessage()], 400);
+                return response()->json([
+                    'error' => $e->getMessage(),
+                    'csvRow' => $index + 2 // Adding 2 to account for header row and 0-based index
+                ], 400);
             }
         }
 
+        // var_dump($savedDistances);
         return response()->json($savedDistances);
     }
 }

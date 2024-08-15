@@ -2,7 +2,13 @@
     gap: 30px;
     display: flex;
     flex-wrap: wrap;
+    overflow-y: scroll;
     flex-direction: row;
+    max-height: calc(100vh - 136px);
+
+    &.for-mass-calculation {
+        max-height: calc(100vh - 300px);
+    }
 
     .distance-container {
         width: 300px;

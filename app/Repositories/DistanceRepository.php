@@ -13,7 +13,7 @@ class DistanceRepository
 
     public function saveDistance(string $cepFrom, string $cepTo, float $distance)
     {
-        Distance::create([
+        return Distance::create([
             'cep_from' => $cepFrom,
             'cep_to' => $cepTo,
             'calculated_distance' => $distance,

@@ -10,26 +10,36 @@
                     {{ loading ?  'Calculando...' : 'Calcular Distâncias' }}
                 </Button>
             </div>
-            <div v-if="errorMessage" class="error-message">
-                {{ errorMessage }}
+            <div v-if="error || rowError">
+                <span v-if="error" class="error-message">
+                    {{ error }}
+                </span>
+                <span v-if="rowError" class="error-message">
+                    Seu CSV contém erro na linha: {{ rowError }}
+                </span>
             </div>
         </div>
+        <CalculatedDistancesComponent :distances="response" :forMassCalculation="true"/>
     </div>
   </template>
   
 <script>
     import Button from '../Button/Button.vue';
+    import CalculatedDistancesComponent from '../CalculatedDistancesComponent/CalculatedDistancesComponent.vue';
   
     export default {
         name: 'CalculateMassDistanceComponent',
         components: {
-            Button
+            Button,
+            CalculatedDistancesComponent
         },
         data() {
             return {
                 csvFile: null,
+                response: [],
                 loading: false,
-                errorMessage: ''
+                error: '',
+                rowError: ''
             };
         },
         methods: {
@@ -45,13 +55,14 @@
                 }
             },
             isValidCSV(file) {
-                console.log(file);
                 return file.type === 'text/csv' || file.name.endsWith('.csv');
             },
             async importFile() {
+                if(this.loading) return;
                 if (!this.csvFile) return;
 
                 this.loading = true;
+
                 try {
                     const formData = new FormData();
                     formData.append('file', this.csvFile);
@@ -61,14 +72,25 @@
                             'Content-Type': 'multipart/form-data'
                         }
                     });
-
-                    console.log('Distances calculated and saved:', response.data);
-                } catch (error) {
-                    console.error('Error calculating distances:', error);
+                    this.response = response.data;
+                    console.log(response.data);
+                } catch (err) {
+                    this.handleError(err.response?.data?.error || err.message);
+                    this.rowError = err.response.data.csvRow;
                 } finally {
                     this.loading = false;
                 }
-            }
+            },
+            handleError(errorCode) {
+                const errorMessages = {
+                    from_cep_invalid: 'CEP de origem inválido.',
+                    to_cep_invalid: 'CEP de destino inválido.',
+                    from_cep_coordinates_not_available: 'Coordenadas do CEP de origem não estão disponíveis na Brasil API.',
+                    to_cep_coordinates_not_available: 'Coordenadas do CEP de destino não estão disponíveis na Brasil API.'
+                };
+
+                this.error = errorMessages[errorCode] || 'Ocorreu um erro inesperado. Tente novamente mais tarde.';
+            },
         }
     };
 </script>

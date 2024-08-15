@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="distances-container" v-if="distances.length">
+    <div class="distances-container" :class="{ 'for-mass-calculation': forMassCalculation }" v-if="distances.length">
       <div class="distance-container" v-for="distance in distances" :key="distance._id" >
           <span class="km-container">
             {{ formatDistance(distance.calculated_distance) }}
@@ -37,9 +37,15 @@
     components: {
       KeyValuePair
     },
+    props: {
+      forMassCalculation: {
+            type: Boolean,
+            default: false
+        }
+    },
     data() {
       return {
-        distances: [],
+        distances: []
       };
     },
     created() {
@@ -47,6 +53,8 @@
     },
     methods: {
       async fetchDistances() {
+        console.log(this.forMassCalculation);
+
         try {
           const response = await axios.get('/api/distances');
 
