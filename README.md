@@ -6,6 +6,9 @@ php artisan make:controller LocationController
 php artisan make:model CEPDistance -m
 
 
+php artisan queue:work 
+
+
 mongosh
 show dbs
 use db_name
