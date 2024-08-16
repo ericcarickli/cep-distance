@@ -6,6 +6,12 @@ php artisan make:controller LocationController
 php artisan make:model CEPDistance -m
 
 
+mongosh
+show dbs
+use db_name
+db.dropDatabase()
+
+
 // TODO
 1- handle error message to show correctly -- done
 2- calculate and save elements from .csv  -> handle when cep is invalid for mass  importation

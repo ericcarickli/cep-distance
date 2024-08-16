@@ -21,4 +21,13 @@ class DistanceRepository
             'updated_at' => now(),
         ]);
     }
+
+    public function batchSaveDistances(array $distances)
+    {
+        // Start a transaction to ensure data integrity
+        // DB::transaction(function () use ($distances) {
+            // Bulk insert distances
+            Distance::insert($distances);
+        // });
+    }
 }

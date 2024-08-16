@@ -58,6 +58,10 @@ class DistanceService
         return $this->distanceRepository->saveDistance($cepFrom, $cepTo, $distance);
     }
 
+    public function batchSaveDistances(array $distances) {
+        return $this->distanceRepository->batchSaveDistances($distances);
+    }
+
     private function validateCep(string $cep) {
         $response = Http::get("https://brasilapi.com.br/api/cep/v2/{$cep}");
 

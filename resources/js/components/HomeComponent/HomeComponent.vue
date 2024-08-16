@@ -18,7 +18,7 @@
             :required="true"
             label="CEP de destino"
           />
-          <Button @click="calculateDistance" :disabled="!isCepValid || loading">
+          <Button @click="calculateDistance" :disabled="loading">
             {{ loading ?  'Calculando...' : 'Calcular Distância' }}
           </Button>
         </div>
@@ -54,12 +54,6 @@
         loading: false
       };
     },
-    computed: {
-      isCepValid() {
-        const cepPattern = /^\d{8}$/;
-        return cepPattern.test(this.cepFrom) && cepPattern.test(this.cepTo);
-      }
-    },
     methods: {
       async calculateDistance() {
         if (this.loading) return;
@@ -74,8 +68,6 @@
             cep_from: this.cepFrom,
             cep_to: this.cepTo
           });
-
-          console.log(response);
 
           if (response.data.distance !== undefined) {
             this.distance = response.data.distance;

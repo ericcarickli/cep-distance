@@ -19,19 +19,19 @@
                 </span>
             </div>
         </div>
-        <CalculatedDistancesComponent :distances="response" :forMassCalculation="true"/>
+        <CalculatedElementsComponent :distances="response" :forMassCalculation="true"/>
     </div>
   </template>
   
 <script>
     import Button from '../Button/Button.vue';
-    import CalculatedDistancesComponent from '../CalculatedDistancesComponent/CalculatedDistancesComponent.vue';
+    import CalculatedElementsComponent from '../CalculatedDistancesComponent/CalculatedElementsComponent.vue';
   
     export default {
         name: 'CalculateMassDistanceComponent',
         components: {
             Button,
-            CalculatedDistancesComponent
+            CalculatedElementsComponent
         },
         data() {
             return {
@@ -41,6 +41,9 @@
                 error: '',
                 rowError: ''
             };
+        },
+        created() {
+            this.response = [];
         },
         methods: {
             onFileChange(event) {
@@ -72,11 +75,10 @@
                             'Content-Type': 'multipart/form-data'
                         }
                     });
-                    this.response = response.data;
-                    console.log(response.data);
+                    this.response = response.data.saved_distances;
                 } catch (err) {
                     this.handleError(err.response?.data?.error || err.message);
-                    this.rowError = err.response.data.csvRow;
+                    this.rowError = err.response.data.csv_row;
                 } finally {
                     this.loading = false;
                 }
