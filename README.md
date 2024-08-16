@@ -7,7 +7,7 @@ docker-compose up --build
 ```     
   4. Após o docker iniciar por completo, rode em outro terminal o seguinte comando:
  ```jsx
-docker exec -it laravel_vue_app php artisan queue:work
+sh start-worker.sh
 ```     
    5. Acesse o projeto pelo navegador na url http://localhost:8000
    6. Teste da maneira que achar melhor :)

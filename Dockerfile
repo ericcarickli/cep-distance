@@ -32,14 +32,14 @@ WORKDIR /var/www
 # Copy application code
 COPY . /var/www
 
+RUN cp .env.example .env
+
 # Install PHP and Node.js dependencies
 RUN composer install
 RUN npm install
 
 # Expose ports
 EXPOSE 8000 5173
-
-CMD ["sh", "-c", "php artisan key:generate"]
 
 # Start the application
 CMD ["sh", "-c", "npm run dev & php artisan serve --host=0.0.0.0 --port=8000"]
