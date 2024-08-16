@@ -9,7 +9,8 @@ docker-compose up --build
  ```jsx
 docker exec -it laravel_vue_app php artisan queue:work
 ```     
-   4. Teste da maneira que achar melhor :)
+   5. Acesse o projeto pelo navegador na url http://localhost:8000
+   6. Teste da maneira que achar melhor :)
 
 # Documentação
 
