@@ -25,4 +25,4 @@ sh start-worker.sh
 # Observações
 - Na rota /distance utilizando método POST, é validado se os CEP's enviados são válidos, e se a Brasil API possui as coordenadas desse CEP, caso alguma dessas verificações não seja cumprida é lançado uma exception mostrando para o usuário que deu aconteceu um erro.
 - Na rota /calculate-mass utilizando método POST, é carregado um arquivo .csv que deve possuir duas colunas 'CEP origem' e 'CEP fim', a partir do momento que a requisição é recebida, um novo job é criado e adicionado na fila para ser executado de forma assíncrona.
-- Foi adicionado um arquivo .csv que pode ser feito o download para ser utilizado para testes.
+- Foi adicionado um arquivo .csv na raiz do projeto que pode ser feito o download para ser utilizado para testes.
