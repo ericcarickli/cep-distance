@@ -16,7 +16,7 @@ docker exec -it laravel_vue_app php artisan queue:work
 ## Backend routes
 
 | HTTP Request | Endpoint | Body | Descrição |
-| ------ | ------ | ------ | ------ | ------ |
+| ------ | ------ | ------ | ------ |
 | GET | /distances | - | Lista todos as distâncias já calculadas |
 | POST | /distance | {cep_from, cep_to} | Faz o cálculo da distância entre dois ceps |
 | POST | /calculate-mass | multipart/form-data | Faz cáculo de distância em massa a partir de um arquivo .csv que deve possuir duas colunas 'CEP origem' e 'CEP fim' |
