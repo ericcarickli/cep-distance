@@ -15,11 +15,11 @@ docker exec -it laravel_vue_app php artisan queue:work
 
 ## Backend routes
 
-| HTTP Request | Endpoint | Token | Body | Descrição |
+| HTTP Request | Endpoint | Body | Descrição |
 | ------ | ------ | ------ | ------ | ------ |
-| GET | /distances | - | - | Lista todos as distâncias já calculadas |
-| POST | /distance | - | {cep_from, cep_to} | Faz o cálculo da distância entre dois ceps |
-| POST | /calculate-mass | - | multipart/form-data | Faz cáculo de distância em massa a partir de um arquivo .csv que deve possuir duas colunas 'CEP origem' e 'CEP fim' |
+| GET | /distances | - | Lista todos as distâncias já calculadas |
+| POST | /distance | {cep_from, cep_to} | Faz o cálculo da distância entre dois ceps |
+| POST | /calculate-mass | multipart/form-data | Faz cáculo de distância em massa a partir de um arquivo .csv que deve possuir duas colunas 'CEP origem' e 'CEP fim' |
 
 # Observações
 - Na rota /distance utilizando método POST, é validado se os CEP's enviados são válidos, e se o Brasil API possui as coordinates desse CEP, caso alguma dessas verificações não seja cumprida é lançado uma exception mostrando para o usuário que deu aconteceu um erro.
