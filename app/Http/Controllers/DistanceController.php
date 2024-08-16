@@ -9,8 +9,7 @@ class DistanceController extends Controller
 {
     protected $distanceService;
 
-    public function __construct(DistanceService $distanceService)
-    {
+    public function __construct(DistanceService $distanceService) {
         $this->distanceService = $distanceService;
     }
 
@@ -19,8 +18,7 @@ class DistanceController extends Controller
         return response()->json($distances);
     }
 
-    public function calculate(Request $request)
-    {
+    public function calculate(Request $request) {
         $cepFrom = $request->input('cep_from');
         $cepTo = $request->input('cep_to');
 

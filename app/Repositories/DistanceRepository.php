@@ -6,13 +6,11 @@ use App\Models\Distance;
 
 class DistanceRepository
 {
-    public function getAllDistances()
-    {
+    public function getAllDistances() {
         return Distance::all();
     }
 
-    public function saveDistance(string $cepFrom, string $cepTo, float $distance)
-    {
+    public function saveDistance(string $cepFrom, string $cepTo, float $distance) {
         return Distance::create([
             'cep_from' => $cepFrom,
             'cep_to' => $cepTo,
@@ -22,8 +20,7 @@ class DistanceRepository
         ]);
     }
 
-    public function batchSaveDistances(array $distances)
-    {
+    public function batchSaveDistances(array $distances) {
         // Start a transaction to ensure data integrity
         // DB::transaction(function () use ($distances) {
             // Bulk insert distances
