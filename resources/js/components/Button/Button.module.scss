@@ -1,0 +1,33 @@
+.button-container {
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    justify-content: center;
+    height: 40px;
+    min-height: 40px;
+    max-height: 40px;
+
+    border: none;
+    padding: 10px;
+    border-radius: 7px;
+    background: #F5A017;
+
+    line-height: 1;
+    cursor: pointer;
+    font-size: 14px;
+    color: #FFFFFF;
+    font-weight: 500;
+
+    &:hover:not(.disabled) {
+        background: #FBBC34;
+    }
+
+    &:active:not(.disabled) {
+        color: #000;
+    }
+
+    &.disabled {
+        background: #f9cc6b;
+        cursor: not-allowed;
+    }
+}

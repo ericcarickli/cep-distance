@@ -1,0 +1,33 @@
+.main-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    background: #F5A017;
+    flex-direction: column;
+
+    .header-container {
+        z-index: 4;
+        display: flex;
+        background: #fff;
+        padding: 10px 26px;
+        flex-direction: row;
+        align-items: center;
+        text-decoration: none;
+        justify-content: space-between;
+    
+        .title {
+            color: #000;
+            font-size: 26px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    }
+
+    .children-container {
+        height: 100%;
+        padding: 40px;
+        display: flex;
+        overflow: hidden;
+        // overflow-y: auto;
+    }
+}

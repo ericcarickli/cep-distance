@@ -1,0 +1,46 @@
+.distances-container {
+    gap: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    overflow-y: scroll;
+    flex-direction: row;
+    max-height: calc(100vh - 136px);
+
+    &.for-mass-calculation {
+        max-height: calc(100vh - 300px);
+    }
+
+    .distance-container {
+        width: 300px;
+        padding: 26px;
+        display: flex;
+        border-radius: 10px;
+        align-items: center;
+        background: #fff;
+        flex-direction: column;
+        justify-content: center;
+
+        .km-container {
+            font-size: 40px;
+            color: #F5A017;
+            font-weight: bold;
+            padding: 50px 20px;
+
+            .unit {
+                font-size: 24px;
+            }
+        }
+
+        .values-container {
+            gap: 20px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+    }
+}
+
+.no-elements {
+    color: #fff;
+    font-size: 16px;
+}
