@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\DistanceService;
+use App\Jobs\ProcessCsvFile;
 
 class DistanceController extends Controller
 {
@@ -83,7 +84,6 @@ class DistanceController extends Controller
             }
         }
 
-        // Save any remaining distances and append to the list of saved distances
         if (!empty($distancesProcessed)) {
             $this->distanceService->batchSaveDistances($distancesProcessed);
             $savedDistances = array_merge($savedDistances, $distancesProcessed);
@@ -93,5 +93,18 @@ class DistanceController extends Controller
             'processed_rows' => $rowCount,
             'saved_distances' => $savedDistances
         ]);
+
+
+        // USING JOB FOR MASS CALCULATION FROM .CSV FILE
+        // $request->validate([
+        //     'file' => 'required|mimes:csv,txt'
+        // ]);
+    
+        // $file = $request->file('file');
+        // $filePath = $file->getRealPath();
+    
+        // ProcessCsvFile::dispatch($filePath);
+    
+        // return response()->json(['message' => 'File is being processed']);
     }
 }

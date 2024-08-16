@@ -23,7 +23,7 @@
             </div>
         </div>
         <div v-else-if="!forMassCalculation">
-            <p class="no-elements">No distances calculated yet.</p>
+            <p class="no-elements">Nenhuma disância calculada no momento.</p>
         </div>
     </div>
 </template>
