@@ -22,5 +22,5 @@ docker exec -it laravel_vue_app php artisan queue:work
 | POST | /calculate-mass | multipart/form-data | Faz cáculo de distância em massa a partir de um arquivo .csv que deve possuir duas colunas 'CEP origem' e 'CEP fim' |
 
 # Observações
-- Na rota /distance utilizando método POST, é validado se os CEP's enviados são válidos, e se o Brasil API possui as coordinates desse CEP, caso alguma dessas verificações não seja cumprida é lançado uma exception mostrando para o usuário que deu aconteceu um erro.
-- Na rota /calculate-mass utilizando método POST, é carregado um arquivo .csv que deve possuir duas colunas 'CEP origem' e 'CEP fim', a partir do momento que a requisição é recebida, um novo job é criado e adicionado na queue para ser executado.
+- Na rota /distance utilizando método POST, é validado se os CEP's enviados são válidos, e se a Brasil API possui as coordenadas desse CEP, caso alguma dessas verificações não seja cumprida é lançado uma exception mostrando para o usuário que deu aconteceu um erro.
+- Na rota /calculate-mass utilizando método POST, é carregado um arquivo .csv que deve possuir duas colunas 'CEP origem' e 'CEP fim', a partir do momento que a requisição é recebida, um novo job é criado e adicionado na fila para ser executado de forma assíncrona.
