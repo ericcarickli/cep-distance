@@ -9,6 +9,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 
 use SplFileObject;
 
@@ -34,12 +35,11 @@ class ProcessCsvFile implements ShouldQueue
 
         $filePath = storage_path('app/' . $this->filePath);
 
-        $chunkSize = 1000;
+        $chunkSize = 50;
         $csv = new SplFileObject($filePath);
         $csv->setFlags(SplFileObject::READ_CSV);
         $csv->seek(1);
 
-        $savedDistances = [];
         $distancesProcessed = [];
         $rowCount = 0;
 
@@ -55,7 +55,16 @@ class ProcessCsvFile implements ShouldQueue
             foreach ($rows as $row) {
                 list($cepFrom, $cepTo) = $row;
                 try {
-                    $distance = $distanceService->calculateDistance($cepFrom, $cepTo);
+                    $cacheKey = $cepFrom . '_' . $cepTo;
+                    $cachedDistance = Redis::get($cacheKey);
+
+                    if ($cachedDistance !== null) {
+                        $distance = $cachedDistance;
+                    } else {
+                        $distance = $distanceService->calculateDistance($cepFrom, $cepTo);
+                        Redis::set($cacheKey, $distance, 'EX', 3600); // Cache for 1 hour
+                    }
+
                     $distanceData = [
                         'cep_from' => $cepFrom,
                         'cep_to' => $cepTo,
@@ -65,9 +74,8 @@ class ProcessCsvFile implements ShouldQueue
                     ];
 
                     $distancesProcessed[] = $distanceData;
-                    if (count($distancesProcessed) >= 100) {
+                    if (count($distancesProcessed) >= $chunkSize) {
                         $distanceService->batchSaveDistances($distancesProcessed);
-                        $savedDistances = array_merge($savedDistances, $distancesProcessed);
                         $distancesProcessed = [];
                     }
                 } catch (\Exception $e) {
@@ -78,7 +86,6 @@ class ProcessCsvFile implements ShouldQueue
 
             if (!empty($distancesProcessed)) {
                 $distanceService->batchSaveDistances($distancesProcessed);
-                $savedDistances = array_merge($savedDistances, $distancesProcessed);
                 $distancesProcessed = [];
             }
         }
@@ -86,7 +93,6 @@ class ProcessCsvFile implements ShouldQueue
         // Save any remaining distances
         if (!empty($distancesProcessed)) {
             $distanceService->batchSaveDistances($distancesProcessed);
-            $savedDistances = array_merge($savedDistances, $distancesProcessed);
         }
 
         Log::info('Job completed. Total rows processed: ' . $rowCount);

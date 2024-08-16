@@ -43,6 +43,6 @@ class DistanceController extends Controller
     
         ProcessCsvFile::dispatch($path);
     
-        return response()->json(['message' => 'File is being processed']);
+        return response()->json(['message' => 'process_initiated']);
     }
 }
