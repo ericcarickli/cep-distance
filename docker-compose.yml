@@ -3,35 +3,34 @@ version: '3.8'
 services:
   redis:
     image: redis
-    container_name: redis-container
+    container_name: redis
     ports:
       - "6379:6379"
   mongo:
     image: mongo:latest
-    container_name: mongo-container
+    container_name: mongo
     ports:
       - "27017:27017"
     volumes:
       - mongo_data:/data/db
 
-  # app:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   container_name: laravel_vue_app
-  #   ports:
-  #     - "8000:8000"  # Laravel port
-  #     - "5173:5173"
-  #   depends_on:
-  #     - mongo
-  #   environment:
-  #     DB_CONNECTION: mongodb
-  #     DB_HOST: mongo
-  #     DB_PORT: 27017
-  #     DB_DATABASE: mydatabase
-  #     DB_USERNAME: root
-  #     DB_PASSWORD: example
-  #   # command: ["sh", "-c", "npm run dev && php artisan serve --host=0.0.0.0 --port=8000"]
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: laravel_vue_app
+    ports:
+      - "8000:8000"  # Laravel port
+      - "5173:5173"
+    depends_on:
+      - mongo
+      - redis
+    environment:
+      DB_CONNECTION: mongodb
+      DB_HOST: mongo
+      DB_PORT: 27017
+      DB_DATABASE: cep_distance
+    # command: ["sh", "-c", "sleep 10 && php artisan queue:work"]
 
 volumes:
   mongo_data:

@@ -69,7 +69,7 @@
                     });
 
                     const responseToMessage = {
-                        'process_initiated': 'Processo de cálculo de massa iniciado. Aguarde o resultado.',
+                        'process_initiated': 'Processo de cálculo de massa iniciado. Resultado será mostrado na tela disâncias já calculadas.',
                     }
 
                     this.response = responseToMessage[response.data.message];

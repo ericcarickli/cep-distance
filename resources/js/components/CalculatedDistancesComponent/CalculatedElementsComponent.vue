@@ -56,7 +56,8 @@
                 return `${day}/${month}/${year}`;
             },
             formatDistance(distance) {
-                return distance.toFixed(2);
+                const numericDistance = parseFloat(distance);
+                return numericDistance.toFixed(2);
             }
         },
     };
