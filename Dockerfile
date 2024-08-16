@@ -5,6 +5,7 @@ FROM php:8.2-fpm
 RUN apt-get update && apt-get install -y \
     libpng-dev libjpeg-dev libfreetype6-dev \
     libzip-dev git unzip \
+    libssl-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd \
     && docker-php-ext-install zip
@@ -20,6 +21,10 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
 # Install MongoDB PHP extension
 RUN pecl install mongodb \
     && docker-php-ext-enable mongodb
+
+# Install Redis PHP extension
+RUN pecl install redis \
+    && docker-php-ext-enable redis
 
 # Set working directory
 WORKDIR /var/www
@@ -37,5 +42,9 @@ RUN npm install
 # Expose ports
 EXPOSE 8000 5173
 
+CMD ["sh", "-c", "php artisan key:generate"]
+
 # Start the application
 CMD ["sh", "-c", "npm run dev & php artisan serve --host=0.0.0.0 --port=8000"]
+
+# CMD ["sh", "-c", "php artisan queue:work"]
