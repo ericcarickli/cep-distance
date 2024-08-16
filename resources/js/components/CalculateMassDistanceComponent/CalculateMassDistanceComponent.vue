@@ -4,46 +4,38 @@
             <div class="calculate-distance-container">
                 <input
                     type="file"
+                    ref="fileInput"
                     @change="onFileChange"
                 />
                 <Button @click="importFile" :disabled="!csvFile || loading">
                     {{ loading ?  'Calculando...' : 'Calcular Distâncias' }}
                 </Button>
             </div>
-            <div v-if="error || rowError">
-                <span v-if="error" class="error-message">
-                    {{ error }}
-                </span>
-                <span v-if="rowError" class="error-message">
-                    Seu CSV contém erro na linha: {{ rowError }}
-                </span>
-            </div>
+            <span v-if="response" class="response">
+                {{ response }}
+            </span>
+            <span v-if="error" class="error-message">
+                {{ error }}
+            </span>
         </div>
-        <CalculatedElementsComponent :distances="response" :forMassCalculation="true"/>
     </div>
   </template>
   
 <script>
     import Button from '../Button/Button.vue';
-    import CalculatedElementsComponent from '../CalculatedDistancesComponent/CalculatedElementsComponent.vue';
   
     export default {
         name: 'CalculateMassDistanceComponent',
         components: {
-            Button,
-            CalculatedElementsComponent
+            Button
         },
         data() {
             return {
                 csvFile: null,
-                response: [],
+                response: '',
                 loading: false,
-                error: '',
-                rowError: ''
+                error: ''
             };
-        },
-        created() {
-            this.response = [];
         },
         methods: {
             onFileChange(event) {
@@ -75,23 +67,25 @@
                             'Content-Type': 'multipart/form-data'
                         }
                     });
-                    this.response = response.data.saved_distances;
+
+                    const responseToMessage = {
+                        'process_initiated': 'Processo de cálculo de massa iniciado. Aguarde o resultado.',
+                    }
+
+                    this.response = responseToMessage[response.data.message];
+                    this.csvFile = null;
+                    setTimeout(() => this.resetFileInput(), 3000);
                 } catch (err) {
-                    this.handleError(err.response?.data?.error || err.message);
-                    this.rowError = err.response.data.csv_row;
+                    this.handleError();
                 } finally {
                     this.loading = false;
                 }
             },
-            handleError(errorCode) {
-                const errorMessages = {
-                    from_cep_invalid: 'CEP de origem inválido.',
-                    to_cep_invalid: 'CEP de destino inválido.',
-                    from_cep_coordinates_not_available: 'Coordenadas do CEP de origem não estão disponíveis na Brasil API.',
-                    to_cep_coordinates_not_available: 'Coordenadas do CEP de destino não estão disponíveis na Brasil API.'
-                };
-
-                this.error = errorMessages[errorCode] || 'Ocorreu um erro inesperado. Tente novamente mais tarde.';
+            resetFileInput() {
+                this.$refs.fileInput.value = '';
+            },
+            handleError() {
+                this.error = 'Ocorreu um erro inesperado. Tente novamente mais tarde.';
             },
         }
     };
